@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details Form</title>
+    <!-- CSS Styles Included Inside HTML -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Student Details Form</h2>
+    <div id="error" class="error"></div>
+    
+    <form id="studentForm">
+        <label for="studentName">Name:</label>
+        <input type="text" id="studentName" name="studentName" required>
+
+        <label for="motherName">Mother's Name:</label>
+        <input type="text" id="motherName" name="motherName" required>
+
+        <label for="fatherName">Father's Name:</label>
+        <input type="text" id="fatherName" name="fatherName" required>
+
+        <label for="studentEmail">Email:</label>
+        <input type="email" id="studentEmail" name="studentEmail" required>
+
+        <label for="studentPhone">Phone:</label>
+        <input type="tel" id="studentPhone" name="studentPhone" pattern="[0-9]{10}" required>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+</div>
+
+<script>
+    function submitForm() {
+        const name = document.getElementById("studentName").value;
+        const motherName = document.getElementById("motherName").value;
+        const fatherName = document.getElementById("fatherName").value;
+        const email = document.getElementById("studentEmail").value;
+        const phone = document.getElementById("studentPhone").value;
+        const dob = document.getElementById("dob").value;
+        const gender = document.getElementById("gender").value;
+        const errorDiv = document.getElementById("error");
+
+        // Error Codes:
+        // 0: Success
+        // 1: Missing Name
+        // 2: Missing Mother's Name
+        // 3: Missing Father's Name
+        // 4: Invalid Email
+        // 5: Invalid Phone
+        // 6: Missing Date of Birth
+        // 7: Missing Gender
+
+        function handleError(code) {
+            switch (code) {
+                case 0:
+                    errorDiv.innerText = "Form submitted successfully!";
+                    errorDiv.style.color = "green";
+                    return true;
+                case 1:
+                    errorDiv.innerText = "Please enter your name.";
+                    break;
+                case 2:
+                    errorDiv.innerText = "Please enter your mother's name.";
+                    break;
+                case 3:
+                    errorDiv.innerText = "Please enter your father's name.";
+                    break;
+                case 4:
+                    errorDiv.innerText = "Please enter a valid email.";
+                    break;
+                case 5:
+                    errorDiv.innerText = "Please enter a valid 10-digit phone number.";
+                    break;
+                case 6:
+                    errorDiv.innerText = "Please enter your date of birth.";
+                    break;
+                case 7:
+                    errorDiv.innerText = "Please select your gender.";
+                    break;
+                default:
+                    errorDiv.innerText = "Unknown error.";
+            }
+            errorDiv.style.color = "red";
+            return false;
+        }
+
+        // Validate fields
+        if (name === "") return handleError(1);
+        if (motherName === "") return handleError(2);
+        if (fatherName === "") return handleError(3);
+        if (!validateEmail(email)) return handleError(4);
+        if (!validatePhone(phone)) return handleError(5);
+        if (dob === "") return handleError(6);
+        if (gender === "") return handleError(7);
+
+        return handleError(0);
+    }
+
+    // Email validation function
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    // Phone validation function
+    function validatePhone(phone) {
+        const re = /^[0-9]{10}$/;
+        return re.test(phone);
+    }
+</script>
+
+</body>
+</html>
